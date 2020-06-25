@@ -1931,6 +1931,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Index"
 });
@@ -1973,13 +1977,30 @@ __webpack_require__.r(__webpack_exports__);
         rating: 0,
         content: null
       },
-      full_star: 0
+      full_star: 0,
+      existing: null
     };
+  },
+  computed: {
+    alreadyReviewed: function alreadyReviewed() {
+      return this.existing !== null;
+    }
   },
   methods: {
     onRantingChanged: function onRantingChanged(value) {
       this.review.rating = rating;
     }
+  },
+  created: function created() {
+    var _this = this;
+
+    // 1. If review exist (in reviews table by id)
+    // 2. Fetch a booking by review key
+    // 3. Store the review
+    axios.get("/api/reviews/".concat(this.$route.params.id)).then(function (response) {
+      _this.existing = response.data.data;
+    })["catch"](function (error) {//
+    });
   }
 });
 
@@ -41678,14 +41699,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container" },
-    [
-      _c(
-        "nav",
-        { staticClass: "navbar navbar-expand-md navbar-dark bg-dark mb-4" },
-        [
+  return _c("div", [
+    _c(
+      "nav",
+      { staticClass: "navbar navbar-expand-md navbar-dark bg-dark mb-4" },
+      [
+        _c("div", { staticClass: "container-md" }, [
           _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
             _vm._v("Laravel BNB Curso")
           ]),
@@ -41720,13 +41739,12 @@ var render = function() {
               ])
             ]
           )
-        ]
-      ),
-      _vm._v(" "),
-      _c("router-view")
-    ],
-    1
-  )
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "container-md" }, [_c("router-view")], 1)
+  ])
 }
 var staticRenderFns = [
   function() {

@@ -23,13 +23,29 @@
                     rating: 0,
                     content: null
                 },
-                full_star: 0
+                full_star: 0,
+                existing: null
+            }
+        },
+        computed: {
+            alreadyReviewed() {
+                return this.existing !== null
             }
         },
         methods: {
             onRantingChanged(value) {
                 this.review.rating = rating
             }
+        },
+        created() {
+            // 1. If review exist (in reviews table by id)
+            // 2. Fetch a booking by review key
+            // 3. Store the review
+            axios.get(`/api/reviews/${this.$route.params.id}`).then(response => {
+                this.existing = response.data.data;
+            }).catch(error => {
+                //
+            })
         }
     }
 </script>
